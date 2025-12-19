@@ -62,7 +62,7 @@ _tasks:
 
   - command: "uv tool install --reinstall ruff" # Install Ruff
     when: "{{ _copier_answers.init_uv_environment and _copier_answers.install_tool_ruff }}"
-  
+
   - command: "uv tool install --reinstall pre-commit" # Install pre-commit
     when: "{{ _copier_answers.init_uv_environment and _copier_answers.install_tool_pre_commit }}"
 
@@ -72,14 +72,13 @@ _tasks:
 
   - command: "pipx install ruff"
     when: "{{ not _copier_answers.init_uv_environment and _copier_answers.install_tool_ruff }}"
-  
+
   - command: "pipx install  pre-commit"
     when: "{{ not _copier_answers.init_uv_environment and _copier_answers.install_tool_pre_commit }}"
-  
+
   # Tools
   - command: "pre-commit install"
     when: "{{_copier_answers.install_tool_pre_commit}}"
-  
+
   - command: "pre-commit run --all-files"
     when: "{{_copier_answers.install_tool_pre_commit}}"
-  
