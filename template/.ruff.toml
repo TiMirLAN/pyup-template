@@ -1,0 +1,10 @@
+line-length = 88
+
+[lint]
+select = ["F", "E", "I", "T", "ANN"]
+extend-select = ["E501", "E722", "E741"]
+ignore = ["ANN401", "ANN002", "ANN003"]
+
+[format]
+quote-style = "double"
+indent-style = "space"

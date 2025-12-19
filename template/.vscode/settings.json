@@ -1,0 +1,13 @@
+{
+  "files.exclude": {
+    ".venv": true,
+    ".pytest_cache": true,
+    ".ruff_cache": true
+  },
+  "python.venvPath": "./.venv",
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+  },
+}

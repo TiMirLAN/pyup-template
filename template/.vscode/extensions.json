@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "tamasfe.even-better-toml",
+    "ms-azuretools.vscode-docker",
+    "charliermarsh.ruff",
+    "editorconfig.editorconfig",
+    "treetsidesoftware.code-spell-checker"
+  ]
+}

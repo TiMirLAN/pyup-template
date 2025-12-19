@@ -1,0 +1,85 @@
+project_name:
+  type: str
+  help: What is your project name?
+  default: "{{_folder_name}}"
+
+project_description:
+  type: str
+  help: What is your project desciption?
+
+init_git_repo:
+  type: bool
+  help: Initialize the git repo in the project directory?
+  default: true
+
+init_uv_environment:
+  type: bool
+  help: Initialize the UV for project?
+  default: true
+
+uv_type:
+  type: str
+  desciption: What type of project to create?
+  when: "{{ init_uv_environment }}"
+  choices:
+    - app
+    - lib
+    - script
+
+uv_use_package:
+  type: bool
+  help: Build project with UV as python package?
+  when: "{{ init_uv_environment }}"
+
+install_tool_ruff:
+  type: bool
+  help: (Re)install Ruff?
+  default: true
+
+install_tool_pre_commit:
+  type: bool
+  help: (Re)install pre-commit?
+  default: true
+  when: "{{ init_git_repo }}"
+
+_subdirectory: template
+_tasks:
+  # uv-related commands
+
+  - command: "proto pin uv 0.9.15 && proto install"
+    when: "{{_copier_answers.init_uv_environment}}"
+
+  - command: # Set up ruff environment
+      - uv
+      - init
+      - "--name={{_copier_answers.project_name}}"
+      - "--description={{_copier_answers.project_description}}"
+      - "--vcs={% if init_git_repo %}git{% else %}none{% endif %}"
+    when: "{{_copier_answers.init_uv_environment}}"
+
+  - command: "uv venv"
+    when: "{{_copier_answers.init_uv_environment}}"
+
+  - command: "uv tool install --reinstall ruff" # Install Ruff
+    when: "{{ _copier_answers.init_uv_environment and _copier_answers.install_tool_ruff }}"
+  
+  - command: "uv tool install --reinstall pre-commit" # Install pre-commit
+    when: "{{ _copier_answers.init_uv_environment and _copier_answers.install_tool_pre_commit }}"
+
+  # no-uv commands
+  - command: "git init"
+    when: "{{ not _copier_answers.init_uv_environment and _copier_answers.init_git_repo }}"
+
+  - command: "pipx install ruff"
+    when: "{{ not _copier_answers.init_uv_environment and _copier_answers.install_tool_ruff }}"
+  
+  - command: "pipx install  pre-commit"
+    when: "{{ not _copier_answers.init_uv_environment and _copier_answers.install_tool_pre_commit }}"
+  
+  # Tools
+  - command: "pre-commit install"
+    when: "{{_copier_answers.install_tool_pre_commit}}"
+  
+  - command: "pre-commit run --all-files"
+    when: "{{_copier_answers.install_tool_pre_commit}}"
+  
